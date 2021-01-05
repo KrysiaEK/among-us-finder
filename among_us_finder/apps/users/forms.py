@@ -18,10 +18,6 @@ class SignupForm(UserCreationForm):
         self.fields['password2'].label = 'Confirm the password:'
         self.fields['password2'].help_text = ''
 
-    def save(self, *args, **kwargs):
-        print('sfsdfdasdfd')
-        return super(SignupForm, self).save(*args, **kwargs)
-
 
 class LoginForm(AuthenticationForm):
 
