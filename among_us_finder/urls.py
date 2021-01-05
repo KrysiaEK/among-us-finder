@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views import generic as views_generic
 
 urlpatterns = [
+    path('', views_generic.TemplateView.as_view(template_name='homepage.html'), name='homepage'),
     path('admin/', admin.site.urls),
     path('users/', include('among_us_finder.apps.users.urls')),
 ]
