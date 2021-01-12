@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'among_us_finder.apps.users',
+    'among_us_finder.apps.rooms',
 ]
 
 MIDDLEWARE = [

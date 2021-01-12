@@ -21,4 +21,5 @@ urlpatterns = [
     path('', views_generic.TemplateView.as_view(template_name='homepage.html'), name='homepage'),
     path('admin/', admin.site.urls),
     path('users/', include('among_us_finder.apps.users.urls')),
+    path('rooms/', include('among_us_finder.apps.rooms.urls')),
 ]
