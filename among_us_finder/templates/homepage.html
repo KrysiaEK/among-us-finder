@@ -3,15 +3,9 @@
 {% block content %}
 
     <p>Log in:</p>
-        <form method="post">{% csrf_token %}
-            {{ form.as_p }}
-            <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
-        </form>
+    <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
 
     <p>Registration:</p>
-        <form method="post">{% csrf_token %}
-            {{ form.as_p }}
-            <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
-        </form>
+    <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
 
 {% endblock %}

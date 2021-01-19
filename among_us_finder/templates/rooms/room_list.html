@@ -3,7 +3,15 @@
     {% block content %}
 
         {% for room in room_list %}
-            <li>{{ room.date }} </li>
+           <a href = "{% url 'rooms:room_detail' room.pk %}" >
+               {% if room.name %}
+                    <p>{{room.name}}:
+               {% else %}
+                    <p>{{ room.id }}:
+               {% endif %}
+            {{ room.time }} {{ room.date }}, {{ room.get_level_display }}, total players: {{ room.players_number }}, lack: {{ room.searched_players_number }}
+                    </p>
+           </a>
         {% empty %}
             <li>No rooms yet.</li>
         {% endfor %}

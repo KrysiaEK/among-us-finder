@@ -25,4 +25,6 @@ class CreateRoomForm(ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['level'].label = 'Level of advancement'
         self.fields['searched_players_number'].label = 'How many players are you looking for'
-        self.fields['name'].label = 'Name of the room'
+        self.fields['name'].label = 'Name of the room (optional)'
+        self.fields['map'].label = 'Map (optional)'
+        self.fields['comment'].label = 'Comment (optional)'

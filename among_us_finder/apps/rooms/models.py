@@ -10,7 +10,7 @@ class Room(models.Model):
     date = models.DateField()
     time = models.TimeField()
     level = models.PositiveSmallIntegerField(choices=LEVEL_CHOICES)
-    map = models.PositiveSmallIntegerField(choices=MAP_CHOICES)
+    map = models.PositiveSmallIntegerField(choices=MAP_CHOICES, blank=True)
     players_number = models.PositiveSmallIntegerField(choices=PLAYERS_NUMBER)
     searched_players_number = models.PositiveSmallIntegerField(choices=SEARCHED_PLAYERS_NUMBER)
     comment = models.TextField(blank=True)

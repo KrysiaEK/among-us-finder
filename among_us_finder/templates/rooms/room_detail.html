@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+        {% if room.name %}
+            <p>{{room.name}}:</p>
+        {% endif %}
+        <p>{{ room.time }}, {{ room.date }}</p>
+        <p>Level of game advancement: {{ room.get_level_display }} </p>
+        <p>Total players number: {{ room.players_number }} </p>
+        <p>Looking for {{ room.searched_players_number }} players </p>
+        <p>{{ room.comment }}</p>
+        <button type="submit" class="save btn btn-default">Join!</button>
+    {% endblock %}

@@ -1,3 +1,5 @@
+from django.urls import reverse
+
 from .forms import SignupForm, LoginForm
 from django.views.generic.edit import FormView
 from django.views.generic import TemplateView
@@ -20,4 +22,6 @@ class RegistrationCompleted(TemplateView):
 class LoginView(FormView):
     template_name = 'users/login.html'
     form_class = LoginForm
-    success_url = 'rooms/room_list'
+
+    def get_success_url(self):
+        return reverse('rooms:room_list')
