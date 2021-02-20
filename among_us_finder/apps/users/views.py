@@ -25,3 +25,8 @@ class LoginView(FormView):
 
     def get_success_url(self):
         return reverse('rooms:room_list')
+
+"""from django.contrib.auth import logout
+
+def logout_view(request):
+    logout(request)"""

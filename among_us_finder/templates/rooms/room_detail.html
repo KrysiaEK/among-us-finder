@@ -9,5 +9,5 @@
         <p>Total players number: {{ room.players_number }} </p>
         <p>Looking for {{ room.searched_players_number }} players </p>
         <p>{{ room.comment }}</p>
-        <button type="submit" class="save btn btn-default">Join!</button>
+        <button><a href="{% url 'rooms:room_conversation' room.pk %}" type="submit" class="save">Join!</button>
     {% endblock %}

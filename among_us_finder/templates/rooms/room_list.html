@@ -2,6 +2,40 @@
 
     {% block content %}
 
+    <div>
+        <form method="get">
+            <label>Time from:</label><input type="datetime-local" name="start_game_before">
+
+            <label>Time to:</label><input type="datetime-local" name="start_game_after">
+
+            <label>Map:</label>
+            <select name="map" id="maps">
+                {% for value, name in maps %}
+                    <option value="{{ value }}" {% if value|stringformat:"i" == request.GET.map %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="save">Search</button>
+        </form>
+    </div>
+<!--
+    <div>
+        <form method="get">
+            <label>Time to:</label><input type="time" name="start_game_after">
+            <button type="submit" class="save">Search</button>
+        </form>
+    </div>
+    <div>
+        <form method="get">
+            <label>Map:</label>
+            <select name="map" id="maps">
+                {% for value, name in maps %}
+                    <option value="{{ value }}" {% if value|stringformat:"i" == request.GET.map %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="save">Search</button>
+        </form>
+    </div> -->
+
         {% for room in room_list %}
            <a href = "{% url 'rooms:room_detail' room.pk %}" >
                {% if room.name %}

@@ -7,10 +7,16 @@ class Room(models.Model):
     PLAYERS_NUMBER = [(4, "4"), (5, "5"), (6, "6"), (7, '7'), (8, "8"), (9, "9"), (10, "10")]
     SEARCHED_PLAYERS_NUMBER = [(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5"), (6, "6"), (7, '7'), (8, "8"), (9, "9")]
     name = models.CharField(max_length=20, blank=True)
-    date = models.DateField()
-    time = models.TimeField()
+    game_start = models.DateTimeField()
     level = models.PositiveSmallIntegerField(choices=LEVEL_CHOICES)
     map = models.PositiveSmallIntegerField(choices=MAP_CHOICES, blank=True)
     players_number = models.PositiveSmallIntegerField(choices=PLAYERS_NUMBER)
     searched_players_number = models.PositiveSmallIntegerField(choices=SEARCHED_PLAYERS_NUMBER)
     comment = models.TextField(blank=True)
+
+
+class Message(models.Model):
+    author = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    comment = models.TextField(blank=True)
+    published = models.DateTimeField()
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='messages')

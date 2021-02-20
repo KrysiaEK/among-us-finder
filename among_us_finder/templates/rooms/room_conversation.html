@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+
+        {% if room.name %}
+            {{ room.name }}
+        {% else %}
+            {{ room.pk }}
+        {% endif %}
+            {{ room.game_start }}
+
+        {% for message in message_list %}
+            <p> {{ message.published }}</p>
+            <p>{{ message.author }}</p>
+            <p>{{ message.comment }}</p>
+
+        {% empty %}
+            <li>No messages yet.</li>
+        {% endfor %}
+
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Send</button>
+        </form>
+
+    {% endblock %}
