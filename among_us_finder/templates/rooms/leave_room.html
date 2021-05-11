@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+
+        You left the room.
+
+        <p><a href="{% url 'rooms:room_list' %}" type="submit">Go to rooms list</a></p>
+
+    {% endblock %}

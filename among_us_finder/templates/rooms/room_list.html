@@ -4,11 +4,11 @@
 
     <div>
         <form method="get">
-            <label>Time from:</label><input type="datetime-local" name="start_game_before">
+            <label>Time from: </label><input type="datetime-local" name="start_game_before">
 
-            <label>Time to:</label><input type="datetime-local" name="start_game_after">
+            <label>Time to: </label><input type="datetime-local" name="start_game_after">
 
-            <label>Map:</label>
+            <label>Map: </label>
             <select name="map" id="maps">
                 {% for value, name in maps %}
                     <option value="{{ value }}" {% if value|stringformat:"i" == request.GET.map %}selected{% endif %}>{{ name }}</option>
@@ -43,11 +43,13 @@
                {% else %}
                     <p>{{ room.id }}:
                {% endif %}
-            {{ room.time }} {{ room.date }}, {{ room.get_level_display }}, total players: {{ room.players_number }}, lack: {{ room.searched_players_number }}
+               {{ room.game_start }}, {{ room.get_level_display }}, total players: {{ room.players_number }}, lack: {{ room.searched_players_number }}
                     </p>
            </a>
         {% empty %}
             <li>No rooms yet.</li>
         {% endfor %}
+
+    <button><a href="{% url 'rooms:create_room_form' %}" type="submit">Create room</a></button>
 
     {% endblock %}

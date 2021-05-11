@@ -2,25 +2,55 @@
 
     {% block content %}
 
-        {% if room.name %}
-            {{ room.name }}
+        {% if user.is_authenticated %}
+
+            {% if room.name %}
+                {{ room.name }}
+            {% else %}
+                {{ room.pk }}.
+            {% endif %}
+                {{ room.game_start }}
+
+           <p><a href="{% url 'rooms:participants_list' room.pk %}"><button>Participants list</button></a></p>
+
+            {% for message in msgs %}
+                <p> {{ message.published }}</p>
+                <p>{{ message.author }}</p>
+                <p>{{ message.comment }}</p>
+
+            {% empty %}
+                <li>No messages yet.</li>
+            {% endfor %}
+
+            <form method="post">{% csrf_token %}
+                {{ form.comment }}
+               <button type="submit">Send</button>
+            </form>
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                            <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <form method="post" action="{% url 'rooms:leave_room' room.pk %}">{% csrf_token %}
+                <button>Leave room</button>
+            </form>
+
         {% else %}
-            {{ room.pk }}
+            <p>Log in:</p>
+            <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
+
+            <p>Registration:</p>
+            <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
         {% endif %}
-            {{ room.game_start }}
-
-        {% for message in message_list %}
-            <p> {{ message.published }}</p>
-            <p>{{ message.author }}</p>
-            <p>{{ message.comment }}</p>
-
-        {% empty %}
-            <li>No messages yet.</li>
-        {% endfor %}
-
-        <form method="post">{% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Send</button>
-        </form>
 
     {% endblock %}

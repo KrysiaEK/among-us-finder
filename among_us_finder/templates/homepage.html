@@ -2,10 +2,14 @@
 
 {% block content %}
 
-    <p>Log in:</p>
-    <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
+    {% if user.is_authenticated %}
+        USER PAGE
+    {% else %}
+        <p>Log in:</p>
+        <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
 
-    <p>Registration:</p>
-    <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
+        <p>Registration:</p>
+        <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
+    {% endif %}
 
 {% endblock %}

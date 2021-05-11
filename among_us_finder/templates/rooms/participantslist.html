@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+
+        {% if room.name %}
+            {{ room.name }}
+        {% else %}
+            {{ room.pk }}.
+        {% endif %}
+            {{ room.game_start }}
+        <p>
+        {% for user in participants %}
+            <p>
+                {{ user.username }}
+                {% if is_host %}<button><a href="{% url 'rooms:participant_delete' room.pk user.pk %}">Delete from room</a></button>{% endif %}
+                <button><a href="{% url 'rooms:participant_delete' room.pk user.pk %}">Report abuse</a></button>
+            </p>
+        {% endfor %}
+
+        Host: {{ host }}
+
+    {% endblock %}
