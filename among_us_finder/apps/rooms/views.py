@@ -1,14 +1,16 @@
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.utils import timezone
 
 from .constants import ROOM_ERROR_MAP
-from .forms import CreateRoomForm, MessageForm
+from .forms import CreateRoomForm, MessageForm, ReportUser
 from django.views.generic.edit import FormView, FormMixin
 from django.views.generic import TemplateView, ListView, DetailView
 from .models import Room, Message
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.mail import mail_admins
+import smtplib
 
 from ..users.models import User
 
@@ -154,45 +156,6 @@ class DeleteParticipant(TemplateView):
         room.participants.remove(User.objects.get(pk=kwargs.get('user_pk')))
         return redirect('rooms:participants_list', pk=kwargs.get('room_pk'))
 
-class ReportUser(TemplateView):
-    model = Room
-    template_name = 'rooms/report_user.html'
-
-    
-
-
-
-"""
-class RoomConversation(ListView, FormView):
-    model = Message
-    template_name = 'rooms/room_conversation.html'
-    form_class = MessageForm
-
-    def get_context_data(self, **kwargs):
-        ctx = super().get_context_data(**kwargs)
-        if self.request.user.is_authenticated:
-            ctx['user'] = self.request.user
-            ctx['room'] = get_object_or_404(Room, pk=self.kwargs.get('pk'))
-        return ctx
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['author'] = self.request.user
-        kwargs['room'] = get_object_or_404(Room, pk=self.kwargs.get('pk'))
-        return kwargs
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-
-    def get_queryset(self):
-        qs = Message.objects.filter(room__pk=self.kwargs['pk'])
-        return qs
-
-    def get_success_url(self):
-        return reverse_lazy('rooms:room_conversation', kwargs={'pk': self.kwargs.get('pk')})
-"""
-
 
 class LeaveRoomView(DetailView):
     model = Room
@@ -214,3 +177,32 @@ class UserRooms(ListView):
         qs = {'Actual': rooms.filter(game_start__gte=timezone.now()),
               'Old': rooms.filter(game_start__lt=timezone.now())}
         return qs
+
+
+class ReportUserFormView(FormView):
+    template_name = 'rooms/report_user.html'
+    form_class = ReportUser
+    success_url = 'user_reported'
+
+    def form_valid(self, form):
+        reporting_user = self.request.user
+        reported_user = get_object_or_404(User, pk=self.kwargs.get('user_pk'))
+        room = get_object_or_404(Room, pk=self.kwargs.get('room_pk'))
+        reason = form.cleaned_data['reason']
+        subject = "Abuse report"
+        body = {
+            'username': reporting_user.username,
+            'reported_username': reported_user.username,
+            'room': str(room.id),
+            'reason': reason,
+        }
+        try:
+            message = "\n".join(body.values())
+            mail_admins(subject, message)
+            return super().form_valid(form)
+        except smtplib.SMTPException:
+            return HttpResponse('Invalid header found.')
+
+
+class ReportSuccess(TemplateView):
+    template_name = 'rooms/report_success.html'

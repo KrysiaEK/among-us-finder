@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 import environ
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 env = environ.Env()
@@ -128,3 +127,8 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/users/login'
 
 LOGIN_REDIRECT_URL = '/users/login'
+LOGOUT_REDIRECT_URL = '/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+ADMINS = [("krysia", "panda.kaziu@gmail.com")]

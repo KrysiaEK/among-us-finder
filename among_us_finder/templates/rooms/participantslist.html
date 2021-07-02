@@ -13,7 +13,7 @@
             <p>
                 {{ user.username }}
                 {% if is_host %}<button><a href="{% url 'rooms:participant_delete' room.pk user.pk %}">Delete from room</a></button>{% endif %}
-                <button><a href="{% url 'rooms:participant_delete' room.pk user.pk %}">Report abuse</a></button>
+                <button><a href="{% url 'rooms:report_user' user.pk room.pk%}">Report abuse</a></button>
             </p>
         {% endfor %}
 

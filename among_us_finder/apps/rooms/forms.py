@@ -1,4 +1,5 @@
 from django.forms import ModelForm
+from django import forms
 from .models import Room, Message
 from django.core.exceptions import PermissionDenied
 
@@ -56,13 +57,6 @@ class MessageForm(ModelForm):
         instance.save()
         return instance
 
-class ReportUser(ModelForm):
-    pass
 
-
-"""
-class RoomSearchForm(Form):
-    time = forms.TimeField()
-    date = forms.DateField()
-    map = forms.ChoiceField(choices=Room.MAP_CHOICES)
-"""
+class ReportUser(forms.Form):
+    reason = forms.CharField(widget=forms.Textarea)

@@ -7,7 +7,8 @@
     <body>
         {% block navbar %}
         <div>
-            <a href="{% url 'homepage' %}">Among us finder</a>
+            <a href="{% url 'rooms:user_room' %}">Among us finder</a>
+            <a href="{% url 'users:logout_form' %}"><p style="text-align: right">Log out</p></a>
         </div>
         {% endblock navbar %}
         {% block content %}

@@ -1,15 +1,20 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Among Us Finder</title>
+    </head>
 
-{% block content %}
+    Among us finder
 
-    {% if user.is_authenticated %}
-        USER PAGE
-    {% else %}
-        <p>Log in:</p>
-        <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
+    <body>
 
-        <p>Registration:</p>
-        <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
-    {% endif %}
+        {% block content %}
 
-{% endblock %}
+            <p>Log in:</p>
+            <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
+            <p>Registration:</p>
+            <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
+
+        {% endblock %}
+    </body>
+</html>
