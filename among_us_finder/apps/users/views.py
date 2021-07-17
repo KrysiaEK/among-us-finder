@@ -1,4 +1,3 @@
-from django.shortcuts import redirect
 from django.urls import reverse
 
 from .forms import SignupForm, LoginForm
@@ -37,15 +36,3 @@ class MyLogoutView(LogoutView):
 
     def logout_view(request):
         logout(request)
-
-"""
-    def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super().get_form_kwargs()
-        if self.request.user.is_authenticated:
-            kwargs['host'] = self.request.user
-        return kwargs
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
-"""
