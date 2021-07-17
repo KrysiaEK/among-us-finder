@@ -1,12 +1,11 @@
-<html>
-    <head>
-        <title>Among Us Finder</title>
-    </head>
-    <body>
+{% extends 'base.html' %}
+
+{% block content %}
+
     Registration:
-        <form method="post">{% csrf_token %}
+        <form method="post" action="/users">{% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="save btn btn-default">Sign up</button>
+            <button><a href="{% url 'users:registration_completed' %}" type="submit">Sign up</a></button>
         </form>
-    </body>
-</html>
+
+{% endblock %}

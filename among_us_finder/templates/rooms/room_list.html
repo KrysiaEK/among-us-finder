@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+
+    <div>
+        <form method="get">
+            <label>Time from: </label><input type="datetime-local" name="start_game_before">
+
+            <label>Time to: </label><input type="datetime-local" name="start_game_after">
+
+            <label>Map: </label>
+            <select name="map" id="maps">
+                {% for value, name in maps %}
+                    <option value="{{ value }}" {% if value|stringformat:"i" == request.GET.map %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="save">Search</button>
+        </form>
+    </div>
+
+        {% for room in room_list %}
+           <a href = "{% url 'rooms:room_detail' room.pk %}" >
+               {% if room.name %}
+                    <p>{{room.name}}:
+               {% else %}
+                    <p>{{ room.id }}:
+               {% endif %}
+               {{ room.game_start }}, {{ room.get_level_display }}, total players: {{ room.players_number }}, lack: {{ room.searched_players_number }}
+                    </p>
+           </a>
+        {% empty %}
+            <li>No rooms yet.</li>
+        {% endfor %}
+
+    <button><a href="{% url 'rooms:create_room_form' %}" type="submit">Create room</a></button>
+    <button><a href="{% url 'rooms:user_room' %}" type="submit">My rooms</a></button>
+    {% endblock %}

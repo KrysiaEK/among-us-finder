@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Among Us Finder</title>
+    </head>
+
+    <body>
+        {% block navbar %}
+        <div>
+            <a href="{% url 'rooms:user_room' %}">Among us finder</a>
+            <a href="{% url 'users:logout_form' %}"><p style="text-align: right">Log out</p></a>
+        </div>
+        {% endblock navbar %}
+        {% block content %}
+
+        {% endblock content %}
+    </body>
+</html>

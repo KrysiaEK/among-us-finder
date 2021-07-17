@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    {% if user.is_authenticated %}
+        Create room:
+        <form method="post">{% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Create!</button>
+        </form>
+    {% else %}
+        <p>Log in:</p>
+        <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
+
+        <p>Registration:</p>
+        <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
+    {% endif %}
+
+{% endblock %}

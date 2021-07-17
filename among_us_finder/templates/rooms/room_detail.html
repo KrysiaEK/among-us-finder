@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+        {% if room.name %}
+            <p>{{room.name}}:</p>
+        {% endif %}
+        <p>{{ room.game_start }}</p>
+        <p>Level of game advancement: {{ room.get_level_display }} </p>
+        <p>Total players number: {{ room.players_number }} </p>
+        <p>Looking for {{ room.searched_players_number }} players </p>
+        <p>{{ room.comment }}</p>
+
+        {% if user.is_authenticated %}
+            <form method="post">{% csrf_token %}
+             <button>Join!</button>
+            </form>
+        {% else %}
+            <a href="{% url 'users:login_form' %}?next={% url 'rooms:room_detail' room.pk %}" type="submit"><button>Log in!</button></a>
+        {% endif %}
+
+    {% endblock %}

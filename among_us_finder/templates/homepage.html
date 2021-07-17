@@ -1,23 +1,20 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Among Us Finder</title>
     </head>
+
+    Among us finder
+
     <body>
-    Homepage (robocze)
 
-    Log out
+        {% block content %}
 
-    <p>Log in</p>
-        <form method="post">{% csrf_token %}
-            {{ form.as_p }}
+            <p>Log in:</p>
             <button><a href="{% url 'users:login_form' %}" >Log in</a></button>
-        </form>
-
-
-    <p>Registration:</p>
-        <form method="post">{% csrf_token %}
-            {{ form.as_p }}
+            <p>Registration:</p>
             <button><a href="{% url 'users:signup_form' %}">Sign up</a></button>
-        </form>
+
+        {% endblock %}
     </body>
 </html>

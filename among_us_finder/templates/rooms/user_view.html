@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+    {% block content %}
+
+        {% for name, rooms in rooms_types.items %}
+            {{ name }}:
+            {% for room in rooms %}
+               <a href = "{% url 'rooms:room_conversation' room.pk %}" >
+                   {% if room.name %}
+                        <p>{{room.name}}:
+                   {% else %}
+                        <p>{{ room.id }}:
+                   {% endif %}
+                   {{ room.game_start }}, {{ room.get_level_display }}, total players: {{ room.players_number }}, lack: {{ room.searched_players_number }}
+                        </p>
+               </a>
+            {% empty %}
+                <li>No rooms yet.</li>
+            {% endfor %}
+        {% endfor %}
+
+        <a href="{% url 'rooms:create_room_form' %}" type="submit"><button>Create room</button></a>
+
+    {% endblock %}

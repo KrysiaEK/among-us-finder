@@ -1,0 +1,13 @@
+<!-- do pierwszej wersji wyszukiwarki -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+    Find room:
+        <form method="get">
+            {{ form.as_p }}
+            <button type="submit" class="save btn btn-default">Search</button>
+        </form>
+
+{% endblock %}
