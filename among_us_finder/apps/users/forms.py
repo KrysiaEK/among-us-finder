@@ -6,7 +6,7 @@ class SignupForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'level_of_advancement']
+        fields = ('username', 'email', 'level_of_advancement')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -17,6 +17,15 @@ class SignupForm(UserCreationForm):
         self.fields['password1'].help_text = ''
         self.fields['password2'].label = 'Confirm the password:'
         self.fields['password2'].help_text = ''
+
+    def save(self, commit=True):
+        print('W FORMS')
+        user = super().save(commit=False)
+        user.username = self.cleaned_data['username']
+        user.email = self.cleaned_data['email']
+        user.set_password(self.cleaned_data['password1'])
+        user.save()
+        return user
 
 
 class LoginForm(AuthenticationForm):

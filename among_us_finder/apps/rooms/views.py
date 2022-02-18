@@ -1,21 +1,24 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.utils import timezone
-
-from .constants import ROOM_ERROR_MAP
-from .forms import CreateRoomForm, MessageForm, ReportUser
 from django.views.generic.edit import FormView, FormMixin
 from django.views.generic import TemplateView, ListView, DetailView
-from .models import Room, Message
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.mail import mail_admins
+
 import smtplib
 
-from ..users.models import User
+from among_us_finder.apps.rooms.forms import CreateRoomForm, MessageForm, ReportUser
+from among_us_finder.apps.rooms.models import Room
+from among_us_finder.apps.rooms.constants import MapChoices, ROOM_ERROR_MAP
+from among_us_finder.apps.users.models import User
 
 
 class CreateRoomFormView(FormView):
+
+    """View to create room"""
+
     template_name = 'rooms/create_room.html'
     form_class = CreateRoomForm
     success_url = 'room_created'
@@ -36,13 +39,16 @@ class RoomCreatedView(TemplateView):
 
 
 class RoomList(ListView):
+
+    """View to list all active rooms"""
+
     model = Room
     template_name = 'rooms/room_list.html'
     ordering = ['game_start']
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
-        ctx['maps'] = Room.MAP_CHOICES
+        ctx['maps'] = MapChoices.Choices
         return ctx
 
     def get_queryset(self):
@@ -53,13 +59,19 @@ class RoomList(ListView):
         if self.request.GET.get('game_start_after'):
             time_after = self.request.GET.get('game_start_after')
             qs = qs.filter(game_start__lte=time_after)
-        if self.request.GET.get('map'):
-            map = self.request.GET.get('map')
-            qs = qs.filter(map=map)
+        if self.request.GET.get('game_map'):
+            game_map = self.request.GET.get('game_map')
+            qs = qs.filter(map=game_map)
         return qs
 
 
-class RoomDetail(DetailView):
+class JoinRoom(DetailView):
+
+    """View to join room.
+
+    With validation if amount of paricipants is ok and if user didn't join this room earlier. In case of error redirects
+    to JoinRoomError view"""
+
     model = Room
     template_name = 'rooms/room_detail.html'
 
@@ -81,6 +93,9 @@ class RoomDetail(DetailView):
 
 
 class JoinRoomError(TemplateView):
+
+    """View with join errors"""
+
     template_name = 'rooms/no_place.html'
 
     def get_context_data(self, **kwargs):
@@ -90,6 +105,12 @@ class JoinRoomError(TemplateView):
 
 
 class RoomConversation(PermissionRequiredMixin, FormMixin, DetailView):
+
+    """View to read and create message in room conversation.
+
+    With validation if user joined room (have permission to read and write comments.
+    """
+
     model = Room
     template_name = 'rooms/room_conversation.html'
     form_class = MessageForm
@@ -132,6 +153,9 @@ class RoomConversation(PermissionRequiredMixin, FormMixin, DetailView):
 
 
 class ParticipantList(DetailView):
+
+    """List of participants who joined room"""
+
     model = Room
     template_name = 'rooms/participantslist.html'
 
@@ -146,6 +170,9 @@ class ParticipantList(DetailView):
 
 
 class DeleteParticipant(TemplateView):
+
+    """Host can delete participant from room"""
+
     model = Room
     template_name = 'rooms/delete_user.html'
 
@@ -158,6 +185,9 @@ class DeleteParticipant(TemplateView):
 
 
 class LeaveRoomView(DetailView):
+
+    """View to leave room"""
+
     model = Room
     template_name = 'rooms/leave_room.html'
 
@@ -168,6 +198,9 @@ class LeaveRoomView(DetailView):
 
 
 class UserRooms(ListView):
+
+    """List of user's actual and old rooms (rooms she/he joined)"""
+
     model = Room
     template_name = 'rooms/user_view.html'
     context_object_name = 'rooms_types'
@@ -180,6 +213,9 @@ class UserRooms(ListView):
 
 
 class ReportUserFormView(FormView):
+
+    """View with form to report abuse"""
+
     template_name = 'rooms/report_user.html'
     form_class = ReportUser
     success_url = 'user_reported'
