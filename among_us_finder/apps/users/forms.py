@@ -19,7 +19,6 @@ class SignupForm(UserCreationForm):
         self.fields['password2'].help_text = ''
 
     def save(self, commit=True):
-        print('W FORMS')
         user = super().save(commit=False)
         user.username = self.cleaned_data['username']
         user.email = self.cleaned_data['email']

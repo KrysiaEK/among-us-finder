@@ -69,18 +69,32 @@ class JoinRoom(DetailView):
 
     """View to join room.
 
-    Validation if amount of paricipants is ok and if user didn't join this room earlier. In case of error redirects
+    With validation if amount of paricipants is ok and if user didn't join this room earlier. In case of error redirects
     to JoinRoomError view"""
 
-        if self.request.GET.get('map'):
-            map = self.request.GET.get('map')
-            qs = qs.filter(map=map)
-        return qs
+    model = Room
+    template_name = 'rooms/room_detail.html'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            ctx['user'] = self.request.user
+        return ctx
+
+    def post(self, *args, **kwargs):
+        room = self.get_object()
+        if self.request.user in room.participants.all():
+            return redirect('rooms:join_room_error', error_code='already_in_room')
+        if room.participants.count() >= room.searched_players_number:
+            return redirect('rooms:join_room_error', error_code='no_place')
+        else:
+            room.participants.add(self.request.user)
+            return redirect('rooms:room_conversation', pk=self.kwargs.get('pk'))
 
 
 class RoomDetail(DetailView):
-  
-  """View to join room and room conversation."""
+
+    """View to join room and room conversation."""
 
     model = Room
     template_name = 'rooms/room_detail.html'

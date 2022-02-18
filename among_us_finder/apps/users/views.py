@@ -6,6 +6,7 @@ from django.contrib.auth import logout
 
 from among_us_finder.apps.users.forms import SignupForm, LoginForm
 
+
 class SignupView(FormView):
     template_name = 'users/signup.html'
     form_class = SignupForm
@@ -37,9 +38,9 @@ class MyLoginView(LoginView):
     form_class = LoginForm
 
     def get_success_url(self):
-        next_url = self.request.GET.get('next', None)  # here method should be GET or POST.
+        next_url = self.request.GET.get('next', None)
         if next_url:
-            return "%s" % (next_url)  # you can include some query strings as well
+            return "%s" % (next_url)
         return reverse('rooms:room_list')
 
 

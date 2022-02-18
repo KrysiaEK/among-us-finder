@@ -5,7 +5,7 @@
         {% for name, rooms in rooms_types.items %}
             {{ name }}:
             {% for room in rooms %}
-               <a href = "{% url 'rooms:room_conversation' room.pk %}" >
+               <a href = "{% url 'rooms:room_conversation' room.pk %}">
                    {% if room.name %}
                         <p>{{room.name}}:
                    {% else %}

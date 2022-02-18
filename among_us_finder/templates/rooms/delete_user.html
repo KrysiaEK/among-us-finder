@@ -11,6 +11,6 @@
            <p> <form method="post" >{% csrf_token %}
                 <button>Yes</button>
             </form>
-       <button>No</button>
+            <p><a href="{% url 'rooms:participants_list' room_pk %}"><button>No</button></a></p>
 
     {% endblock %}
