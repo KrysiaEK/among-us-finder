@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Room, Message
+
+from among_us_finder.apps.rooms.models import Room, Message
 
 
 @admin.register(Room)

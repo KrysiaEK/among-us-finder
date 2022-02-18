@@ -1,20 +1,31 @@
 from django.urls import reverse
-
-from .forms import SignupForm, LoginForm
 from django.views.generic.edit import FormView
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import logout
 
+from among_us_finder.apps.users.forms import SignupForm, LoginForm
 
 class SignupView(FormView):
     template_name = 'users/signup.html'
     form_class = SignupForm
-    success_url = 'registrated'
+    success_url = 'registered'
 
     def form_valid(self, form):
-        form.save()
+        if form.is_valid():
+            form.save()
         return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handle POST requests: instantiate a form instance with the passed
+        POST variables and then check if it's valid.
+        """
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 class RegistrationCompleted(TemplateView):

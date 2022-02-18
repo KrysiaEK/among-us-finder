@@ -1,14 +1,15 @@
 from django.forms import ModelForm
 from django import forms
-from .models import Room, Message
 from django.core.exceptions import PermissionDenied
+
+from among_us_finder.apps.rooms.models import Room, Message
 
 
 class CreateRoomForm(ModelForm):
 
     class Meta:
         model = Room
-        fields = ["name", "game_start", "map", "level", "players_number", "searched_players_number", "comment"]
+        fields = ["name", "game_start", "game_map", "level", "players_number", "searched_players_number", "comment"]
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('host', None)
@@ -16,10 +17,10 @@ class CreateRoomForm(ModelForm):
         self.fields['level'].label = 'Level of advancement'
         self.fields['searched_players_number'].label = 'How many players are you looking for'
         self.fields['name'].label = 'Name of the room (optional)'
-        self.fields['map'].label = 'Map (optional)'
+        self.fields['game_map'].label = 'Map (optional)'
         self.fields['comment'].label = 'Comment (optional)'
         self.fields['game_start'].label = 'Date and time'
-        self.fields['map'].required = False
+        self.fields['game_map'].required = False
 
     def save(self, commit=True):
         if not self.user:
@@ -38,6 +39,8 @@ class CreateRoomForm(ModelForm):
 
 
 class MessageForm(ModelForm):
+
+    """Form to create comment in room"""
 
     class Meta:
         model = Message
@@ -59,4 +62,7 @@ class MessageForm(ModelForm):
 
 
 class ReportUser(forms.Form):
+
+    """Form to report abuse"""
+
     reason = forms.CharField(widget=forms.Textarea)
