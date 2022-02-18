@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from among_us_finder.apps.rooms.models import Room, Message
 
 

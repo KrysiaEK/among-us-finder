@@ -1,12 +1,11 @@
 from django.forms import ModelForm
 from django import forms
-from among_us_finder.apps.rooms.models import Room, Message
 from django.core.exceptions import PermissionDenied
+
+from among_us_finder.apps.rooms.models import Room, Message
 
 
 class CreateRoomForm(ModelForm):
-
-    """Form to create room"""
 
     class Meta:
         model = Room

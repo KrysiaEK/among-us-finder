@@ -18,7 +18,7 @@ from among_us_finder.apps.users.models import User
 class CreateRoomFormView(FormView):
 
     """View to create room"""
-
+  
     template_name = 'rooms/create_room.html'
     form_class = CreateRoomForm
     success_url = 'room_created'
@@ -69,8 +69,18 @@ class JoinRoom(DetailView):
 
     """View to join room.
 
-    With validation if amount of paricipants is ok and if user didn't join this room earlier. In case of error redirects
+    Validation if amount of paricipants is ok and if user didn't join this room earlier. In case of error redirects
     to JoinRoomError view"""
+
+        if self.request.GET.get('map'):
+            map = self.request.GET.get('map')
+            qs = qs.filter(map=map)
+        return qs
+
+
+class RoomDetail(DetailView):
+  
+  """View to join room and room conversation."""
 
     model = Room
     template_name = 'rooms/room_detail.html'
@@ -108,9 +118,9 @@ class RoomConversation(PermissionRequiredMixin, FormMixin, DetailView):
 
     """View to read and create message in room conversation.
 
-    With validation if user joined room (have permission to read and write comments.
+    Validation if user joined room (have permission to read and write comments.
     """
-
+    
     model = Room
     template_name = 'rooms/room_conversation.html'
     form_class = MessageForm
@@ -185,6 +195,7 @@ class DeleteParticipant(TemplateView):
 
 
 class LeaveRoomView(DetailView):
+
 
     """View to leave room"""
 

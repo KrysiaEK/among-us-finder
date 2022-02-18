@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth.decorators import login_required
+
 from among_us_finder.apps.rooms import views
 
 app_name = 'rooms'
@@ -19,4 +20,3 @@ urlpatterns = [
     path('report_user/<int:user_pk>/<int:room_pk>/', login_required(views.ReportUserFormView.as_view()),
          name='report_user'),
     path('report_user/<int:user_pk>/<int:room_pk>/user_reported/', views.ReportSuccess.as_view(), name='user_reported'),
-]
